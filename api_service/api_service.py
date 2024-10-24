@@ -1,17 +1,15 @@
-from pyexpat.errors import messages
-
 from fastapi import FastAPI, Request, Body
-from pydantic import BaseModel
-import ollama
+from common.model import QuestionAnswer
 
 app = FastAPI()
 
 
-class Answer(BaseModel):
-    question: str
-    answer: str
-
 @app.post("/question")
 async def question(request: Request):
-    question=(await request.body()).decode()
-    return Answer(question=question, answer="Hi")
+    question = (await request.body()).decode()
+
+    return QuestionAnswer(question=question, answer="Hi")
+
+@app.get("/hello")
+async def question(request: Request):
+    return QuestionAnswer(question="Hello", answer="Hi")
