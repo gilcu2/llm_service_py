@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, BackgroundTasks
 import ollama
 from common.model import QuestionAnswer
-from common.kafka import send_to_kafka
+from common.postgres import insert_data
 import random
 import os
 import sys
@@ -29,7 +29,7 @@ async def question(request: Request, background_tasks: BackgroundTasks):
     response = await client.chat(model="llama3.2", messages=messages)
     answer = response['message']['content']
     qa = QuestionAnswer(question=question, answer=answer)
-    background_tasks.add_task(send_to_kafka, qa=qa)
+    background_tasks.add_task(insert_data, qa)
     return qa
 
 
@@ -37,7 +37,7 @@ async def question(request: Request, background_tasks: BackgroundTasks):
 async def question(request: Request, background_tasks: BackgroundTasks):
     question = (await request.body()).decode()
     qa = QuestionAnswer(question=question, answer=f"The answer is {random.randint(1, 1000)}")
-    background_tasks.add_task(send_to_kafka, qa=qa)
+    background_tasks.add_task(insert_data, qa)
     return qa
 
 

@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from common.kafka import get_from_kafka
+from common.postgres import get_latest
 from common.model import QuestionAnswer
 
 app = FastAPI()
@@ -7,8 +7,8 @@ app = FastAPI()
 
 @app.get("/history/")
 async def question(limit: int = 10):
-    msgs = get_from_kafka(limit)
-    return msgs
+    qas = get_latest(limit)
+    return qas
 
 
 @app.get("/hello")
