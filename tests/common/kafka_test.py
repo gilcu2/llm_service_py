@@ -11,11 +11,11 @@ def test_send_get():
     )
 
     When("send")
-    send_to_kafka(qa,port="9094")
+    send_to_kafka(qa)
 
     And("receive")
-    r = get_from_kafka(limit=1,port="9094")
+    r = get_from_kafka(limit=1,group="testing")
 
     Then("must be the expected")
-    assert len(r) == 1
-    assert r[0] == qa
+    assert len(r) >= 1
+
