@@ -1,13 +1,14 @@
 from answer_service.answer_service import app
 from tests.bdd_helper import *
 from fastapi.testclient import TestClient
+import random
 
 client = TestClient(app)
 
 
-def test_question():
+def test_question_and_queue():
     Given("question")
-    question = "How are you doing"
+    question = f"How are you doing {random.randint(1, 1000)}"
 
     When("call endpoint")
     response = client.post("/question", content=question.encode())
@@ -17,3 +18,7 @@ def test_question():
     response_dict=response.json()
     assert response_dict["question"] == question
     assert len(response_dict["answer"]) > 0
+
+    
+
+
