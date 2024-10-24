@@ -21,4 +21,4 @@ but the connection to kafka from python inside the container is failing
 ## Test
 
 Implemented in pytest but are failing because the dependencies with other services. 
-The dependent services have to be mocked. End 2 end services have to be created.
+For solving the dependent services have to be mocked. End 2 end tests have to be created.
