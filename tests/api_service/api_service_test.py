@@ -1,8 +1,7 @@
 from api_service.api_service import app
 from tests.bdd_helper import *
 from fastapi.testclient import TestClient
-import pytest
-import httpx
+
 
 client = TestClient(app)
 
