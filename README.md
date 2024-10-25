@@ -1,4 +1,4 @@
-# IU Conding challenge
+# IU Coding challenge
 
 The proposed implementation uses llama3.2 for answer.
 For keep the history I think the best option is Kafka because scalability but, I didn't achieve 
@@ -18,6 +18,17 @@ curl -X POST -H "Content-Type: text/plain" --data "How are you llama" \
 For gte the history:
 
 curl  http://localhost:8083/history
+
+### Example
+
+```shell
+
+reynaldo.gila$  curl -X POST -H "Content-Type: text/plain" --data "How are you llama" http://localhost:8080/question_ollama
+{
+  "question":"How are you llama",
+  "answer":"I'm doing well, thank you for asking! I'm a large language model, so I don't have feelings or emotions like humans do, but I'm always happy to chat with you and help with any questions or topics you'd like to discuss. How about you? How's your day going?"
+}
+```
 
 
 ## Testing
