@@ -28,6 +28,18 @@ reynaldo.gila$  curl -X POST -H "Content-Type: text/plain" --data "How are you l
   "question":"How are you llama",
   "answer":"I'm doing well, thank you for asking! I'm a large language model, so I don't have feelings or emotions like humans do, but I'm always happy to chat with you and help with any questions or topics you'd like to discuss. How about you? How's your day going?"
 }
+
+reynaldo.gila$ curl  http://localhost:8083/history/?limit=4
+[
+  {
+    "question":"How are you llama",
+    "answer":"I'm doing well, thank you for asking! I'm a large language model, so I don't have feelings or emotions like humans do, but I'm always happy to chat with you and help with any questions or topics you'd like to discuss. How about you? How's your day going?"
+  },
+  {
+    "question":"How are you llama",
+    "answer":"I'm just a language model, I don't have feelings or emotions like humans do, but I'll play along!\n\nSo, how can I help you today? Do you have any questions, need help with something, or just want to chat about llamas (which, let's be real, are pretty awesome)?"}
+    , ...
+]
 ```
 
 
