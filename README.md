@@ -17,7 +17,7 @@ curl -X POST -H "Content-Type: text/plain" --data "How are you llama" \
 
 For gte the history:
 
-curl  http://localhost:8083/history
+curl  http://localhost:8083/history/
 
 ### Example
 
