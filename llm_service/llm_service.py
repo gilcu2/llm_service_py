@@ -1,7 +1,7 @@
-from fastapi import FastAPI, Request, BackgroundTasks
+from fastapi import FastAPI, Request
 import ollama
 from common.model import QuestionAnswer
-from common.postgres import insert_data
+
 import random
 import os
 import sys
@@ -22,14 +22,13 @@ logger.debug(f"Ollamaendpoint: {OLLAMA_ENDPOINT}")
 
 
 @app.post("/question_ollama")
-async def question(request: Request, background_tasks: BackgroundTasks):
+async def question(request: Request):
     question = (await request.body()).decode()
     client = ollama.AsyncClient(host=f"http://{OLLAMA_ENDPOINT}")
     messages = [{'role': 'user', 'content': question}]
     response = await client.chat(model="llama3.2:1b", messages=messages)
     answer = response['message']['content']
     qa = QuestionAnswer(question=question, answer=answer)
-    background_tasks.add_task(insert_data, qa)
     return qa
 
 

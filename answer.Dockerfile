@@ -12,7 +12,7 @@ RUN pip install -r requirements.txt
 
 # Copy the application code to the working directory
 COPY common /common
-COPY answer_service /answer_service
+COPY llm_service /answer_service
 
 # Expose the port on which the application will run
 EXPOSE 8082
