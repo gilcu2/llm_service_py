@@ -2,90 +2,74 @@ volumes:
   kafka_data:
     driver: local
 
-networks:
-  ui_net:
-    driver: bridge
-  traccar-net:
-    driver: bridge
-
 services:
 
-  api-service:
-    image: api-service
-    networks:
-      - ui_net
-    ports:
-      - "8080:8080"
-    depends_on:
-      - answer-service
-    environment:
-      - ANSWER_ENDPOINT=answer-service:8082
-
-  answer-service:
-    image: answer-service
-    networks:
-      - ui_net
-    ports:
-      - "8082:8082"
-    depends_on:
-      - postgres
-      - ollama
-    environment:
-      - POSTGRES_ENDPOINT=postgres:5432
-      - OLLAMA_ENDPOINT=ollama:11434
-
-  history-service:
-    image: history-service
-    networks:
-      - ui_net
-    ports:
-      - "8083:8083"
-    depends_on:
-      - postgres
-    environment:
-      - POSTGRES_ENDPOINT=postgres:5432
-
-
-  ollama:
-    image: ollama/ollama:latest
-    ports:
-      - 11434:11434
-    volumes:
-      - .:/code
-      - ./ollama/ollama:/root/.ollama
-      - ./entrypoint.sh:/entrypoint.sh
-    container_name: ollama
-    pull_policy: always
-    tty: true
-    restart: always
-    environment:
-      - OLLAMA_KEEP_ALIVE=24h
-      - OLLAMA_HOST=0.0.0.0
-    entrypoint: [ "/usr/bin/bash", "/entrypoint.sh" ]
-    networks:
-      - ui_net
-
-  ollama-webui:
-    image: ghcr.io/open-webui/open-webui:main
-    container_name: ollama-webui
-    volumes:
-      - ./ollama/ollama-webui:/app/backend/data
-    depends_on:
-      - ollama
-    ports:
-      - 8090:8080
-    environment: # https://docs.openwebui.com/getting-started/env-configuration#default_models
-      - OLLAMA_BASE_URLS=http://ollama:11434
-      - ENV=dev
-      - WEBUI_AUTH=False
-      - WEBUI_NAME=valiantlynx AI
-      - WEBUI_URL=http://localhost:8090
-      - WEBUI_SECRET_KEY=t0p-s3cr3t
-    extra_hosts:
-      - host.docker.internal:host-gateway
-    restart: unless-stopped
-    networks:
-      - ui_net
+#  api-service:
+#    image: api-service
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - answer-service
+#    environment:
+#      - ANSWER_ENDPOINT=answer-service:8082
+#
+#  answer-service:
+#    image: answer-service
+#    ports:
+#      - "8082:8082"
+#    depends_on:
+#      - postgres
+#      - ollama
+#    environment:
+#      - POSTGRES_ENDPOINT=postgres:5432
+#      - OLLAMA_ENDPOINT=ollama:11434
+#
+#  history-service:
+#    image: history-service
+#    ports:
+#      - "8083:8083"
+#    depends_on:
+#      - postgres
+#    environment:
+#      - POSTGRES_ENDPOINT=postgres:5432
+#
+#
+#  ollama:
+#    image: ollama/ollama:latest
+#    ports:
+#      - 11434:11434
+#    volumes:
+#      - .:/code
+#      - ./ollama/ollama:/root/.ollama
+#      - ./entrypoint.sh:/entrypoint.sh
+#    container_name: ollama
+#    pull_policy: always
+#    tty: true
+#    restart: always
+#    environment:
+#      - OLLAMA_KEEP_ALIVE=24h
+#      - OLLAMA_HOST=0.0.0.0
+#    entrypoint: [ "/usr/bin/bash", "/entrypoint.sh" ]
+#
+#  ollama-webui:
+#    image: ghcr.io/open-webui/open-webui:main
+#    container_name: ollama-webui
+#    volumes:
+#      - ./ollama/ollama-webui:/app/backend/data
+#    depends_on:
+#      - ollama
+#    ports:
+#      - 8090:8080
+#    environment: # https://docs.openwebui.com/getting-started/env-configuration#default_models
+#      - OLLAMA_BASE_URLS=http://ollama:11434
+#      - ENV=dev
+#      - WEBUI_AUTH=False
+#      - WEBUI_NAME=valiantlynx AI
+#      - WEBUI_URL=http://localhost:8090
+#      - WEBUI_SECRET_KEY=t0p-s3cr3t
+#    extra_hosts:
+#      - host.docker.internal:host-gateway
+#    restart: unless-stopped
 
   postgres:
     image: postgres:14-alpine
@@ -97,8 +81,6 @@ services:
       - POSTGRES_PASSWORD=pass
       - POSTGRES_USER=user
       - POSTGRES_DB=postgres
-    networks:
-      - ui_net
 
 #  kafka:
 #    image: docker.io/bitnami/kafka:3.4.0-debian-11-r23
@@ -120,8 +102,6 @@ services:
 #
 #  kafka-schema-registry:
 #    image: bitnami/schema-registry:6.0
-#    networks:
-#      - kafka_net
 #    ports:
 #      - "8081:8081"
 #    depends_on:
@@ -133,8 +113,6 @@ services:
 #
 #  kafka-ui:
 #    image: provectuslabs/kafka-ui:v0.7.0
-#    networks:
-#      - kafka_net
 #    ports:
 #      - "8088:8080"
 #    depends_on:

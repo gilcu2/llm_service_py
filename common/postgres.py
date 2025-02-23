@@ -1,7 +1,7 @@
 import logging
 import sys
 import os
-import psycopg2
+import psycopg
 from datetime import datetime
 from common.model import QuestionAnswer
 
@@ -13,18 +13,11 @@ log_formatter = logging.Formatter(
 stream_handler.setFormatter(log_formatter)
 logger.addHandler(stream_handler)
 
-POSTGRES_ENDPOINT = os.getenv("POSTGRES_ENDPOINT", "localhost:5432")
+POSTGRES_ENDPOINT = os.getenv("POSTGRES_ENDPOINT", "postgresql://user:pass@localhost:5432/postgres")
 logger.debug(f"postgresendpoint: {POSTGRES_ENDPOINT}")
 
-(host, port) = POSTGRES_ENDPOINT.split(":")
-conn = psycopg2.connect(database="postgres",
-                        user='user', password='pwd',
-                        host=host, port=port
-                        )
-cursor = conn.cursor()
 
-
-def create_table(table_name: str = "history"):
+async def create_table(table_name: str = "history"):
     sql = f'''
     CREATE TABLE IF NOT EXISTS {table_name} (
         event_id BIGSERIAL PRIMARY KEY, 
@@ -37,11 +30,11 @@ def create_table(table_name: str = "history"):
         event_time DESC
     );    
     '''
-    cursor.execute(sql)
-    conn.commit()
+    async with await psycopg.AsyncConnection.connect(POSTGRES_ENDPOINT) as aconn:
+        async with aconn.cursor() as acur:
+            await acur.execute(sql)
 
-
-def insert_data(qa:QuestionAnswer, table_name: str = "history"):
+async def insert_data(qa:QuestionAnswer, table_name: str = "history"):
     fields = ["event_time", "question", "answer"]
     fields_str = ',\n'.join(fields)
     sql = f"""
@@ -51,10 +44,13 @@ def insert_data(qa:QuestionAnswer, table_name: str = "history"):
         VALUES(%s,%s,%s);
     """
     values=[datetime.now().timestamp(), qa.question, qa.answer]
-    cursor.execute(sql, values)
-    conn.commit()
 
-def get_latest(limit:int=10, table_name: str = "history" ) -> list[QuestionAnswer]:
+    async with await psycopg.AsyncConnection.connect(POSTGRES_ENDPOINT) as aconn:
+        async with aconn.cursor() as acur:
+            await acur.execute(sql,values)
+
+
+async def get_latest(limit:int=10, table_name: str = "history" ) -> list[QuestionAnswer]:
     fields = ["question", "answer"]
     fields_str = ',\n'.join(fields)
     sql = f"""        
@@ -65,9 +61,12 @@ def get_latest(limit:int=10, table_name: str = "history" ) -> list[QuestionAnswe
         LIMIT {limit};
     """
 
-    cursor.execute(sql)
-    records = cursor.fetchall()
-    output = []
-    for row in records:
-        output.append(QuestionAnswer(question=row[0], answer=row[1]))
-    return output
+    async with await psycopg.AsyncConnection.connect(POSTGRES_ENDPOINT) as aconn:
+        async with aconn.cursor() as acur:
+            await acur.execute(sql)
+            r=await acur.fetchall()
+
+            output = []
+            for row in r:
+                output.append(QuestionAnswer(question=row[0], answer=row[1]))
+            return output

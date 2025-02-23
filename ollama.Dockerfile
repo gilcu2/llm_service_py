@@ -11,7 +11,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Copy the application code to the working directory
-RUN  ollama pull llama3.2
+RUN  ollama pull llama3.2:1b
 
 # Expose the port on which the application will run
 EXPOSE 11434
