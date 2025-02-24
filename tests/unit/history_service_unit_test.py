@@ -1,29 +1,27 @@
 from history_service.history_service import app
 from tests.bdd_helper import *
 from fastapi.testclient import TestClient
-from pytest_httpx import HTTPXMock
 from pytest_mock import MockFixture
+from common.model import QuestionAnswer
 
 client = TestClient(app)
 
-def test_history_post(mocker: MockFixture , httpx_mock: HTTPXMock):
-    Given("question and mocking external calls")
-    question = "How are you doing"
-    mocked_response={"question": "Hello", "answer": "Hi"}
-    httpx_mock.add_response(json=mocked_response)
-    mocker.patch("api_service.api_service.insert_data")
+def test_history_post(mocker: MockFixture ):
+    Given("question_answer and mocking external calls")
+    question_answer = QuestionAnswer(question="Hello", answer="Hi")
+    mocker.patch("history_service.history_service.insert_data")
 
 
     When("call endpoint")
-    response = client.post("/question", content=question.encode())
+    response = client.post("/history", json=dict(question_answer))
 
     Then("response is expected")
     assert response.status_code == 200
-    assert response.json() == mocked_response
 
-def test_history_get():
-    Given("limit")
-    limit = 1
+def test_history_get(mocker: MockFixture ):
+    Given("mocked get_latest")
+    question_answer = QuestionAnswer(question="Hello", answer="Hi")
+    mocker.patch("history_service.history_service.get_latest",return_value=[question_answer])
 
     When("call endpoint")
     response = client.get("/history/?limit=1")
@@ -32,4 +30,4 @@ def test_history_get():
     assert response.status_code == 200
     response_list = response.json()
     assert len(response_list) == 1
-    assert len(response_list[0]["answer"]) > 0
+    assert response_list[0] == dict(question_answer)

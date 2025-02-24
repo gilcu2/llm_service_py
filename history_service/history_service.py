@@ -8,12 +8,11 @@ app = FastAPI()
 
 @app.get("/history/")
 async def question(limit: int = 10):
-    qas = get_latest(limit)
+    qas = await get_latest(limit)
     return qas
 
 
 @app.post("/history")
-async def question(qa:, background_tasks: BackgroundTasks):
-
+async def question(qa: QuestionAnswer, background_tasks: BackgroundTasks):
     background_tasks.add_task(insert_data, qa)
 
