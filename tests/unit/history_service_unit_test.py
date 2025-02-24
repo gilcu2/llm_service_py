@@ -6,7 +6,7 @@ from common.model import QuestionAnswer
 
 client = TestClient(app)
 
-def test_history_post(mocker: MockFixture ):
+def test_add_history(mocker: MockFixture ):
     Given("question_answer and mocking external calls")
     question_answer = QuestionAnswer(question="Hello", answer="Hi")
     mocker.patch("history_service.history_service.insert_data")
@@ -18,7 +18,7 @@ def test_history_post(mocker: MockFixture ):
     Then("response is expected")
     assert response.status_code == 200
 
-def test_history_get(mocker: MockFixture ):
+def test_get_latest_histories(mocker: MockFixture ):
     Given("mocked get_latest")
     question_answer = QuestionAnswer(question="Hello", answer="Hi")
     mocker.patch("history_service.history_service.get_latest",return_value=[question_answer])

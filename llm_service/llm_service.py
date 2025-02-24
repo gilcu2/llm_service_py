@@ -1,8 +1,7 @@
-from fastapi import FastAPI, Request
-import ollama
+from fastapi import FastAPI
 from common.model import Question, QuestionAnswer
+from common.ollama import *
 
-import random
 import os
 import sys
 import logging
@@ -16,16 +15,6 @@ log_formatter = logging.Formatter(
     "%(asctime)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] [%(levelname)s] %(name)s: %(message)s")
 stream_handler.setFormatter(log_formatter)
 logger.addHandler(stream_handler)
-
-OLLAMA_ENDPOINT = os.getenv("OLLAMA_ENDPOINT", "localhost:11434")
-logger.debug(f"Ollamaendpoint: {OLLAMA_ENDPOINT}")
-
-
-async def ask_ollama(question: str) -> str:
-    client = ollama.AsyncClient(host=f"http://{OLLAMA_ENDPOINT}")
-    messages = [{'role': 'user', 'content': question.question}]
-    response = await client.chat(model="llama3.2:1b", messages=messages)
-    return response['message']['content']
 
 
 @app.post("/question")
