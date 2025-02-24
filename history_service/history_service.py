@@ -1,6 +1,7 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request,  BackgroundTasks
 from common.postgres import get_latest
 from common.model import QuestionAnswer
+from common.postgres import insert_data
 
 app = FastAPI()
 
@@ -11,6 +12,8 @@ async def question(limit: int = 10):
     return qas
 
 
-@app.get("/hello")
-async def question(request: Request):
-    return QuestionAnswer(question="Hello", answer="Hi")
+@app.post("/history")
+async def question(qa:, background_tasks: BackgroundTasks):
+
+    background_tasks.add_task(insert_data, qa)
+
