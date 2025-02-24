@@ -5,7 +5,6 @@ from pytest_httpx import HTTPXMock
 from pytest_mock import MockFixture
 from common.model import Question, QuestionAnswer
 import pytest
-import asyncio
 
 
 @pytest.mark.asyncio
@@ -36,17 +35,12 @@ async def test_save_question_answer(httpx_mock: HTTPXMock):
     assert r
 
 
-
 def test_question(mocker: MockFixture):
     Given("question and answer")
     question = Question(question="How are you doing")
     mocked_response = QuestionAnswer(question="Hello", answer="Hi")
 
     And("Mocking external calls")
-    def return_async_value(val):
-        f = asyncio.Future()
-        f.set_result(val)
-        return f
     mocker.patch("api_service.api_service.ask_question", return_value=mocked_response)
     mocker.patch("api_service.api_service.save_question_answer", return_value=True)
 

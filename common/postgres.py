@@ -34,7 +34,8 @@ async def create_table(table_name: str = "history"):
         async with aconn.cursor() as acur:
             await acur.execute(sql)
 
-async def insert_data_async(qa:QuestionAnswer, table_name: str = "history"):
+
+async def insert_data(qa: QuestionAnswer, table_name: str = "history"):
     fields = ["event_time", "question", "answer"]
     fields_str = ',\n'.join(fields)
     sql = f"""
@@ -43,29 +44,14 @@ async def insert_data_async(qa:QuestionAnswer, table_name: str = "history"):
         ) 
         VALUES(%s,%s,%s);
     """
-    values=[datetime.now().timestamp(), qa.question, qa.answer]
+    values = [datetime.now().timestamp(), qa.question, qa.answer]
 
     async with await psycopg.AsyncConnection.connect(POSTGRES_ENDPOINT) as aconn:
         async with aconn.cursor() as acur:
-            await acur.execute(sql,values)
-
-def insert_data(qa:QuestionAnswer, table_name: str = "history"):
-    fields = ["event_time", "question", "answer"]
-    fields_str = ',\n'.join(fields)
-    sql = f"""
-        INSERT INTO {table_name} (
-            {fields_str}
-        ) 
-        VALUES(%s,%s,%s);
-    """
-    values=[datetime.now().timestamp(), qa.question, qa.answer]
-
-    with psycopg.connect(POSTGRES_ENDPOINT) as conn:
-        with conn.cursor() as cur:
-            cur.execute(sql,values)
+            await acur.execute(sql, values)
 
 
-async def get_latest(limit:int=10, table_name: str = "history" ) -> list[QuestionAnswer]:
+async def get_latest(limit: int = 10, table_name: str = "history") -> list[QuestionAnswer]:
     fields = ["question", "answer"]
     fields_str = ',\n'.join(fields)
     sql = f"""        
@@ -79,7 +65,7 @@ async def get_latest(limit:int=10, table_name: str = "history" ) -> list[Questio
     async with await psycopg.AsyncConnection.connect(POSTGRES_ENDPOINT) as aconn:
         async with aconn.cursor() as acur:
             await acur.execute(sql)
-            r=await acur.fetchall()
+            r = await acur.fetchall()
 
             output = []
             for row in r:

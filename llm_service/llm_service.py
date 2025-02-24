@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 import ollama
-from common.model import QuestionAnswer
+from common.model import Question, QuestionAnswer
 
 import random
 import os
@@ -21,14 +21,15 @@ OLLAMA_ENDPOINT = os.getenv("OLLAMA_ENDPOINT", "localhost:11434")
 logger.debug(f"Ollamaendpoint: {OLLAMA_ENDPOINT}")
 
 
-@app.post("/question_ollama")
-async def question(request: Request):
-    question = (await request.body()).decode()
+async def ask_ollama(question: str) -> str:
     client = ollama.AsyncClient(host=f"http://{OLLAMA_ENDPOINT}")
-    messages = [{'role': 'user', 'content': question}]
+    messages = [{'role': 'user', 'content': question.question}]
     response = await client.chat(model="llama3.2:1b", messages=messages)
-    answer = response['message']['content']
-    qa = QuestionAnswer(question=question, answer=answer)
+    return response['message']['content']
+
+
+@app.post("/question")
+async def question(question: Question):
+    answer = await ask_ollama(question.question)
+    qa = QuestionAnswer(question=question.question, answer=answer)
     return qa
-
-
