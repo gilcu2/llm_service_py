@@ -17,7 +17,7 @@ POSTGRES_ENDPOINT = os.getenv("POSTGRES_ENDPOINT", "postgresql://user:pass@local
 logger.debug(f"postgresendpoint: {POSTGRES_ENDPOINT}")
 
 
-async def create_table(table_name: str = "history"):
+def create_table(table_name: str = "history"):
     sql = f'''
     CREATE TABLE IF NOT EXISTS {table_name} (
         event_id BIGSERIAL PRIMARY KEY, 
@@ -30,9 +30,9 @@ async def create_table(table_name: str = "history"):
         event_time DESC
     );    
     '''
-    async with await psycopg.AsyncConnection.connect(POSTGRES_ENDPOINT) as aconn:
-        async with aconn.cursor() as acur:
-            await acur.execute(sql)
+    with psycopg.connect(POSTGRES_ENDPOINT) as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql)
 
 
 async def insert_data(qa: QuestionAnswer, table_name: str = "history"):

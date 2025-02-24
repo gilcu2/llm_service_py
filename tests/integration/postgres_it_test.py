@@ -14,7 +14,7 @@ async def test_question():
     qa = QuestionAnswer(question="time", answer=current)
 
     When("create table")
-    await create_table("test")
+    create_table("test")
 
     And("insert data, retrieve data")
     await insert_data(qa, table_name="test")
