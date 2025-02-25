@@ -2,7 +2,12 @@
 FROM python:3.12-slim
 
 # Set the working directory inside the container
-WORKDIR /app
+#WORKDIR /app
+
+#
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc \
+    && pip install psycopg
 
 # Copy the requirements file to the working directory
 COPY requirements.txt .

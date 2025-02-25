@@ -32,7 +32,7 @@ services:
     depends_on:
       - postgres
     environment:
-      - POSTGRES_ENDPOINT=postgres:5432
+      - POSTGRES_ENDPOINT=postgresql://user:pass@postgres:5432/postgres
 
 
   ollama:
@@ -51,26 +51,26 @@ services:
       - OLLAMA_KEEP_ALIVE=24h
       - OLLAMA_HOST=0.0.0.0
     entrypoint: [ "/usr/bin/bash", "/entrypoint.sh" ]
-#
-#  ollama-webui:
-#    image: ghcr.io/open-webui/open-webui:main
-#    container_name: ollama-webui
-#    volumes:
-#      - ./ollama/ollama-webui:/app/backend/data
-#    depends_on:
-#      - ollama
-#    ports:
-#      - 8090:8080
-#    environment: # https://docs.openwebui.com/getting-started/env-configuration#default_models
-#      - OLLAMA_BASE_URLS=http://ollama:11434
-#      - ENV=dev
-#      - WEBUI_AUTH=False
-#      - WEBUI_NAME=valiantlynx AI
-#      - WEBUI_URL=http://localhost:8090
-#      - WEBUI_SECRET_KEY=t0p-s3cr3t
-#    extra_hosts:
-#      - host.docker.internal:host-gateway
-#    restart: unless-stopped
+
+  ollama-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: ollama-webui
+    volumes:
+      - ./ollama/ollama-webui:/app/backend/data
+    depends_on:
+      - ollama
+    ports:
+      - 8090:8080
+    environment: # https://docs.openwebui.com/getting-started/env-configuration#default_models
+      - OLLAMA_BASE_URLS=http://ollama:11434
+      - ENV=dev
+      - WEBUI_AUTH=False
+      - WEBUI_NAME=valiantlynx AI
+      - WEBUI_URL=http://localhost:8090
+      - WEBUI_SECRET_KEY=t0p-s3cr3t
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
 
   postgres:
     image: postgres:14-alpine
