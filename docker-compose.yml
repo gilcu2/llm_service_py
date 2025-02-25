@@ -4,15 +4,16 @@ volumes:
 
 services:
 
-#  api-service:
-#    image: api-service
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - answer-service
-#    environment:
-#      - LLM-SERVICE=answer-service:8082
-#      - HISTORY-SERVICE=postgres:5432
+  api-service:
+    image: api-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - llm-service
+      - history-service
+    environment:
+      - LLM_ENDPOINT=llm-service:8082
+      - HISTORY_ENDPOINT=history-service:8083
 #
   llm-service:
     image: llm-service

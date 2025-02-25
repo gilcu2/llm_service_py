@@ -11,7 +11,7 @@ from datetime import datetime
 async def test_question():
     Given("default db connection and qa")
     current = str(datetime.now())
-    qa = QuestionAnswer(question="time", answer=current)
+    qa = QuestionAnswer(question="time", answer=current,time=current)
 
     When("create table")
     create_table("test")

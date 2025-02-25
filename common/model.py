@@ -7,3 +7,4 @@ class Question(BaseModel):
 class QuestionAnswer(BaseModel):
     question: str
     answer: str
+    time:str

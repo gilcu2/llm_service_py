@@ -23,7 +23,8 @@ def create_table(table_name: str = "history"):
         event_id BIGSERIAL PRIMARY KEY, 
         event_time BIGINT NOT NULL, 
         question text, 
-        answer text 
+        answer text,
+        time text 
     );
 
     CREATE INDEX IF NOT EXISTS {table_name}_event_time ON {table_name} (
@@ -36,15 +37,15 @@ def create_table(table_name: str = "history"):
 
 
 async def insert_data(qa: QuestionAnswer, table_name: str = "history"):
-    fields = ["event_time", "question", "answer"]
+    fields = ["event_time", "question", "answer","time"]
     fields_str = ',\n'.join(fields)
     sql = f"""
         INSERT INTO {table_name} (
             {fields_str}
         ) 
-        VALUES(%s,%s,%s);
+        VALUES(%s,%s,%s,%s);
     """
-    values = [datetime.now().timestamp(), qa.question, qa.answer]
+    values = [datetime.now().timestamp(), qa.question, qa.answer, qa.time]
 
     async with await psycopg.AsyncConnection.connect(POSTGRES_ENDPOINT) as aconn:
         async with aconn.cursor() as acur:
@@ -52,7 +53,7 @@ async def insert_data(qa: QuestionAnswer, table_name: str = "history"):
 
 
 async def get_latest(limit: int = 10, table_name: str = "history") -> list[QuestionAnswer]:
-    fields = ["question", "answer"]
+    fields = ["question", "answer","time"]
     fields_str = ',\n'.join(fields)
     sql = f"""        
         SELECT 
@@ -69,5 +70,5 @@ async def get_latest(limit: int = 10, table_name: str = "history") -> list[Quest
 
             output = []
             for row in r:
-                output.append(QuestionAnswer(question=row[0], answer=row[1]))
+                output.append(QuestionAnswer(question=row[0], answer=row[1],time=row[2]))
             return output

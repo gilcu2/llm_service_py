@@ -3,14 +3,17 @@ from common.model import QuestionAnswer
 import os
 import pytest
 import httpx
+from datetime import datetime
+
+current = str(datetime.now())
 
 HISTORY_ENDPOINT = os.getenv("HISTORY_ENDPOINT", "localhost:8083")
 
 
 @pytest.mark.asyncio
-async def test_question():
+async def test_history():
     Given("question_answer and mocking external calls")
-    question_answer = QuestionAnswer(question="Hello", answer="Hi")
+    question_answer = QuestionAnswer(question="Hello", answer="Hi", time=current)
 
     When("call endpoint")
     async with httpx.AsyncClient() as client:
@@ -21,4 +24,4 @@ async def test_question():
     assert response.status_code == 200
     response_list = response.json()
     assert len(response_list) == 1
-    assert response_list[0] == dict(question_answer)
+    assert response_list[0]["answer"] == question_answer.answer

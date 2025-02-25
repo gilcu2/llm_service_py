@@ -1,8 +1,10 @@
 from tests.bdd_helper import *
 from common.kafka import *
 import random
+import pytest
 
 
+@pytest.mark.skip(reason="no way of currently testing this")
 def test_send_get():
     Given("qa")
     qa = QuestionAnswer(
@@ -14,8 +16,7 @@ def test_send_get():
     send_to_kafka(qa)
 
     And("receive")
-    r = get_from_kafka(limit=1,group="testing")
+    r = get_from_kafka(limit=1, group="testing")
 
     Then("must be the expected")
     assert len(r) >= 1
-

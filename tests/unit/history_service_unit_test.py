@@ -3,12 +3,15 @@ from tests.bdd_helper import *
 from fastapi.testclient import TestClient
 from pytest_mock import MockFixture
 from common.model import QuestionAnswer
+from datetime import datetime
+
+current = str(datetime.now())
 
 client = TestClient(app)
 
 def test_add_history(mocker: MockFixture ):
     Given("question_answer and mocking external calls")
-    question_answer = QuestionAnswer(question="Hello", answer="Hi")
+    question_answer = QuestionAnswer(question="Hello", answer="Hi",time=current)
     mocker.patch("history_service.history_service.insert_data")
 
 
@@ -20,7 +23,7 @@ def test_add_history(mocker: MockFixture ):
 
 def test_get_latest_histories(mocker: MockFixture ):
     Given("mocked get_latest")
-    question_answer = QuestionAnswer(question="Hello", answer="Hi")
+    question_answer = QuestionAnswer(question="Hello", answer="Hi",time=current)
     mocker.patch("history_service.history_service.get_latest",return_value=[question_answer])
 
     When("call endpoint")
