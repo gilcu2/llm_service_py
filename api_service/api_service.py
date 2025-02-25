@@ -34,3 +34,4 @@ async def question(question: Question):
     qa = await ask_question(question)
     await save_question_answer(qa)
     return qa
+

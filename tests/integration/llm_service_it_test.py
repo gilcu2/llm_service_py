@@ -7,7 +7,7 @@ from common.model import Question, QuestionAnswer
 client = TestClient(app)
 
 def test_question():
-    Given("question and mocking httpx")
+    Given("question")
     question = Question(question="What is France capital?")
 
     When("call endpoint")

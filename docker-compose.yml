@@ -11,29 +11,30 @@ services:
 #    depends_on:
 #      - answer-service
 #    environment:
-#      - ANSWER_ENDPOINT=answer-service:8082
+#      - LLM-SERVICE=answer-service:8082
+#      - HISTORY-SERVICE=postgres:5432
 #
-#  answer-service:
-#    image: answer-service
-#    ports:
-#      - "8082:8082"
-#    depends_on:
-#      - postgres
-#      - ollama
-#    environment:
-#      - POSTGRES_ENDPOINT=postgres:5432
-#      - OLLAMA_ENDPOINT=ollama:11434
-#
-#  history-service:
-#    image: history-service
-#    ports:
-#      - "8083:8083"
-#    depends_on:
-#      - postgres
-#    environment:
-#      - POSTGRES_ENDPOINT=postgres:5432
-#
-#
+  llm-service:
+    image: llm-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres
+      - ollama
+    environment:
+
+      - OLLAMA_ENDPOINT=ollama:11434
+
+  history-service:
+    image: history-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_ENDPOINT=postgres:5432
+
+
   ollama:
     image: ollama/ollama:latest
     ports:
