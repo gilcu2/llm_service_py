@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
+#  patch, minor, major
 BUMP_RULE=${1:-patch}
 
-cd $PROJECT_DIR
+#cd $PROJECT_DIR
 
 poetry version $BUMP_RULE
 NEW_VERSION=$(poetry version --short)
