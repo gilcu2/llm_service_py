@@ -1,9 +1,9 @@
+import pytest
 from fastapi.testclient import TestClient
 
 from api_service.api_service import app
 from common.bdd_helper import Given, Then, When
 from common.model import Question
-import pytest
 
 client = TestClient(app)
 

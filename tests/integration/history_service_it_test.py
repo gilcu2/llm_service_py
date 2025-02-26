@@ -1,11 +1,11 @@
 from datetime import datetime
 
+import pytest
 from fastapi.testclient import TestClient
 
 from common.bdd_helper import And, Given, Then, When
 from common.model import QuestionAnswer
 from history_service.history_service import app
-import pytest
 
 current = str(datetime.now())
 

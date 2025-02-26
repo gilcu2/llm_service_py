@@ -6,7 +6,6 @@ from common.bdd_helper import And, Given, Then, When
 from common.model import QuestionAnswer
 from common.postgres import create_table, get_latest, insert_data
 
-
 # Require postgress server
 
 
