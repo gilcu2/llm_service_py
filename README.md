@@ -13,7 +13,7 @@ In other terminal for send a question:
 curl -X POST -H "Content-Type: application/json" -d '{"question":"Who are you"}' \
     http://localhost:8080/question
 
-For gte the history:
+For get the history:
 
 curl  http://localhost:8080/history/
 
