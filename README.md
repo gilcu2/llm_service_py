@@ -1,6 +1,6 @@
 # LLM service
 
-LLM microservices with ollama, postgress
+LLM microservices with local llm via ollama and postgres
 
 ## Running:
 
