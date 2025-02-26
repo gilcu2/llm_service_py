@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ui-step3"
+name = "llm-service"
 version = "0.1.0"
 description = ""
 authors = ["Reynaldo Gil <gilcu2@gmail.com>"]
