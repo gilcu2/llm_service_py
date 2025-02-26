@@ -1,9 +1,11 @@
-from tests.bdd_helper import *
-from common.model import QuestionAnswer
 import os
-import pytest
-import httpx
 from datetime import datetime
+
+import httpx
+import pytest
+
+from common.bdd_helper import Given, Then, When
+from common.model import QuestionAnswer
 
 current = str(datetime.now())
 
@@ -17,8 +19,10 @@ async def test_history():
 
     When("call endpoint")
     async with httpx.AsyncClient() as client:
-        await client.post(f'http://{HISTORY_ENDPOINT}/history', json=dict(question_answer))
-        response = await client.get(f'http://{HISTORY_ENDPOINT}/history/?limit=1')
+        await client.post(
+            f"http://{HISTORY_ENDPOINT}/history", json=dict(question_answer)
+        )
+        response = await client.get(f"http://{HISTORY_ENDPOINT}/history/?limit=1")
 
     Then("response is expected")
     assert response.status_code == 200

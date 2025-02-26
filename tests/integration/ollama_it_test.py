@@ -1,9 +1,10 @@
 import pytest
-from tests.bdd_helper import *
-from common.ollama import *
 
+from common.bdd_helper import Given, Then, When
+from common.ollama import ask_ollama
 
 # Require postgress server
+
 
 @pytest.mark.asyncio
 async def test_ask_ollama():

@@ -23,6 +23,30 @@ pytest-httpx = "^0.35.0"
 pytest-asyncio = "^0.25.3"
 pytest-postgresql = "^6.1.1"
 pytest-mock = "^3.14.0"
+pytest-sugar = "*"
+pytest-xdist = "*"
+pytest-timeout = "*"
+autoflake = "*"
+black = "*"
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-builtins = "*"
+flake8-comprehensions = "*"
+flake8-debugger = "*"
+flake8-eradicate = "*"
+flake8-logging-format = "*"
+isort = "*"
+mkdocstrings = "*"
+mkdocs-material = "*"
+pep8-naming = "*"
+pre-commit = "*"
+pymdown-extensions = "*"
+pytest-github-actions-annotate-failures = "*"
+python-kacl = "*"
+pyupgrade = "*"
+tryceratops = "*"
+#pyright = "^1.1.275"
+mypy = "^1.15.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -33,3 +57,11 @@ pythonpath = [
     "."
 ]
 asyncio_default_fixture_loop_scope = "function"
+
+[tool.isort]
+profile = "black"
+src_paths = ["api_service","history_service","llm_service","common", "tests"]
+
+[tool.black]
+target-version = ["py312"]
+include = '\.pyi?$'

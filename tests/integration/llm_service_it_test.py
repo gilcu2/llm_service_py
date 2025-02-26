@@ -1,10 +1,11 @@
-from llm_service.llm_service import app
-from tests.bdd_helper import *
 from fastapi.testclient import TestClient
-from common.model import Question, QuestionAnswer
 
+from common.bdd_helper import Given, Then, When
+from common.model import Question
+from llm_service.llm_service import app
 
 client = TestClient(app)
+
 
 def test_question():
     Given("question")

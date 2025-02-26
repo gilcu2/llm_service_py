@@ -1,8 +1,10 @@
-from history_service.history_service import app
-from tests.bdd_helper import *
-from fastapi.testclient import TestClient
-from common.model import QuestionAnswer
 from datetime import datetime
+
+from fastapi.testclient import TestClient
+
+from common.bdd_helper import And, Given, Then, When
+from common.model import QuestionAnswer
+from history_service.history_service import app
 
 current = str(datetime.now())
 

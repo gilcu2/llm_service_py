@@ -1,7 +1,7 @@
-from fastapi import FastAPI, Request, BackgroundTasks
-from common.postgres import get_latest
+from fastapi import BackgroundTasks, FastAPI
+
 from common.model import QuestionAnswer
-from common.postgres import insert_data, create_table
+from common.postgres import create_table, get_latest, insert_data
 
 create_table()
 app = FastAPI()

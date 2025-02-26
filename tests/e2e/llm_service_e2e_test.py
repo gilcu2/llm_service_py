@@ -1,8 +1,10 @@
-from tests.bdd_helper import *
-from common.model import Question
 import os
-import pytest
+
 import httpx
+import pytest
+
+from common.bdd_helper import Given, Then, When
+from common.model import Question
 
 LLM_ENDPOINT = os.getenv("LLM_ENDPOINT", "localhost:8082")
 
@@ -14,7 +16,9 @@ async def test_question():
 
     When("call endpoints")
     async with httpx.AsyncClient() as client:
-        response_question = await client.post(f'http://{LLM_ENDPOINT}/question', json=dict(question))
+        response_question = await client.post(
+            f"http://{LLM_ENDPOINT}/question", json=dict(question)
+        )
 
     Then("response is expected")
     assert response_question.status_code == 200

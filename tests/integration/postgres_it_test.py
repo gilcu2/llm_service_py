@@ -1,17 +1,19 @@
-import pytest
-from tests.bdd_helper import *
-from common.postgres import *
-from common.model import QuestionAnswer
 from datetime import datetime
 
+import pytest
+
+from common.bdd_helper import And, Given, Then, When
+from common.model import QuestionAnswer
+from common.postgres import create_table, get_latest, insert_data
 
 # Require postgress server
+
 
 @pytest.mark.asyncio
 async def test_question():
     Given("default db connection and qa")
     current = str(datetime.now())
-    qa = QuestionAnswer(question="time", answer=current,time=current)
+    qa = QuestionAnswer(question="time", answer=current, time=current)
 
     When("create table")
     create_table("test")

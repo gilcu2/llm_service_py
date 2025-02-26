@@ -1,11 +1,13 @@
-from api_service.api_service import app, ask_question, to_history
-from tests.bdd_helper import *
+from datetime import datetime
+
+import pytest
 from fastapi.testclient import TestClient
 from pytest_httpx import HTTPXMock
 from pytest_mock import MockFixture
+
+from api_service.api_service import app, ask_question, to_history
+from common.bdd_helper import And, Given, Then, When
 from common.model import Question, QuestionAnswer
-import pytest
-from datetime import datetime
 
 current = str(datetime.now())
 
@@ -27,7 +29,9 @@ async def test_ask_question(httpx_mock: HTTPXMock):
 @pytest.mark.asyncio
 async def test_to_history(httpx_mock: HTTPXMock):
     Given("question_answer and mocking external calls")
-    question_answer = QuestionAnswer(question="How are you doing", answer="hi", time=current)
+    question_answer = QuestionAnswer(
+        question="How are you doing", answer="hi", time=current
+    )
     mocked_response = ""
     httpx_mock.add_response(text=mocked_response)
 
@@ -41,7 +45,9 @@ async def test_to_history(httpx_mock: HTTPXMock):
 @pytest.mark.asyncio
 async def test_get_histories(httpx_mock: HTTPXMock):
     Given("question_answer and mocking external calls")
-    question_answer = QuestionAnswer(question="How are you doing", answer="hi", time=current)
+    question_answer = QuestionAnswer(
+        question="How are you doing", answer="hi", time=current
+    )
     httpx_mock.add_response(json=[dict(question_answer)])
 
     When("call")
@@ -75,7 +81,9 @@ def test_history(mocker: MockFixture):
     mocked_response = QuestionAnswer(question="Hello", answer="Hi", time=current)
 
     And("Mocking external calls")
-    mocker.patch("api_service.api_service.get_histories", return_value=[mocked_response])
+    mocker.patch(
+        "api_service.api_service.get_histories", return_value=[mocked_response]
+    )
 
     client = TestClient(app)
 

@@ -1,10 +1,11 @@
-from api_service.api_service import app
-from tests.bdd_helper import *
 from fastapi.testclient import TestClient
-from common.model import Question, QuestionAnswer
 
+from api_service.api_service import app
+from common.bdd_helper import Given, Then, When
+from common.model import Question
 
 client = TestClient(app)
+
 
 def test_question():
     Given("question")
@@ -17,14 +18,15 @@ def test_question():
     assert response.status_code == 200
     assert "Paris" in response.json()["answer"]
 
+
 def test_history():
     Given("limit")
-    limit=2
+    limit = 2
 
     When("call endpoint")
     response = client.get(f"/history/?limit={limit}")
 
     Then("response is expected")
     assert response.status_code == 200
-    r=response.json()
+    r = response.json()
     assert len(r) > 1
