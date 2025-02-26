@@ -17,5 +17,5 @@ jobs:
       - uses: ./.github/actions/python-poetry-env
         with:
           python-version: ${{ matrix.python-version }}
-      - run: poetry run precommit.sh
+      - run: poetry run ./scripts/precommit.sh
       - run: poetry run pytest test/unit
