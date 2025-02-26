@@ -9,6 +9,7 @@ from common.model import Question
 API_ENDPOINT = os.getenv("API_ENDPOINT", "localhost:8080")
 
 
+@pytest.mark.xdist_group(name="postgres")
 @pytest.mark.asyncio
 async def test_question():
     Given("question")

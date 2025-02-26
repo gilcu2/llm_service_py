@@ -17,6 +17,7 @@ def test_add_history(mocker: MockFixture):
     question_answer = QuestionAnswer(question="Hello", answer="Hi", time=current)
     mocker.patch("history_service.history_service.insert_data")
 
+
     When("call endpoint")
     response = client.post("/history", json=dict(question_answer))
 

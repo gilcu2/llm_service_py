@@ -5,12 +5,14 @@ from fastapi.testclient import TestClient
 from common.bdd_helper import And, Given, Then, When
 from common.model import QuestionAnswer
 from history_service.history_service import app
+import pytest
 
 current = str(datetime.now())
 
 client = TestClient(app)
 
 
+@pytest.mark.xdist_group(name="postgres")
 def test_add_get_history():
     Given("question_answer and mocking external calls")
     question_answer = QuestionAnswer(question="Hello", answer="Hi", time=current)
