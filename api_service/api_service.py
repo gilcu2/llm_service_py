@@ -35,10 +35,13 @@ async def to_history(qa: QuestionAnswer) -> bool:
     return r.is_success
 
 
-async def get_histories(limit: int = 10) -> bool:
+async def get_histories(limit: int = 10) -> list[QuestionAnswer]:
     async with httpx.AsyncClient() as client:
-        r = await client.get(f'http://{HISTORY_ENDPOINT}/history/?limit={limit}')
-    return r.is_success
+        response = await client.get(f'http://{HISTORY_ENDPOINT}/history/?limit={limit}')
+    r = []
+    for d in response.json():
+        r.append(QuestionAnswer.model_validate(d))
+    return r
 
 
 @app.post("/question")

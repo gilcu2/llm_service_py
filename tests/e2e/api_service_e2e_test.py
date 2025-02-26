@@ -4,7 +4,7 @@ import os
 import pytest
 import httpx
 
-API_ENDPOINT = os.getenv("LLM_ENDPOINT", "localhost:8080")
+API_ENDPOINT = os.getenv("API_ENDPOINT", "localhost:8080")
 
 
 @pytest.mark.asyncio

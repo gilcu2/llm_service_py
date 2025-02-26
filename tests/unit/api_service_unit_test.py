@@ -80,7 +80,7 @@ def test_history(mocker: MockFixture):
     client = TestClient(app)
 
     When("call endpoint")
-    response = client.get("/history")
+    response = client.get("/history/?limit=1")
 
     Then("response is expected")
     assert response.status_code == 200
