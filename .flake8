@@ -1,0 +1,3 @@
+[flake8]
+ignore = G004,N802,E800
+max-line-length = 100
