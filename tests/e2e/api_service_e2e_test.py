@@ -20,4 +20,5 @@ async def test_question():
     Then("response is expected")
     assert response_question.status_code == 200
     assert "Paris" in response_question.json()["answer"]
+    assert response_history.status_code == 200
     assert "Paris" in response_history.json()[0]["answer"]

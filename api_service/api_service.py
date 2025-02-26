@@ -51,7 +51,7 @@ async def question(question: Question):
     return qa
 
 
-@app.get("/history")
+@app.get("/history/")
 async def history(limit: int = 10):
     qa = await get_histories(limit)
     return qa
