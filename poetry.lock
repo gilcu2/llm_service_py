@@ -1347,7 +1347,7 @@ version = "3.0.0"
 description = "Python port of markdown-it. Markdown parsing, done right!"
 optional = false
 python-versions = ">=3.8"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "markdown-it-py-3.0.0.tar.gz", hash = "sha256:e3f60a94fa066dc52ec76661e37c851cb232d92f9886b15cb560aaada2df8feb"},
     {file = "markdown_it_py-3.0.0-py3-none-any.whl", hash = "sha256:355216845c60bd96232cd8d8c40e8f9765cc86f46880e43a8fd22dc1a1a8cab1"},
@@ -1455,7 +1455,7 @@ version = "0.1.2"
 description = "Markdown URL utilities"
 optional = false
 python-versions = ">=3.7"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
     {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
@@ -3066,7 +3066,7 @@ version = "13.9.4"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 optional = false
 python-versions = ">=3.8.0"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "rich-13.9.4-py3-none-any.whl", hash = "sha256:6049d5e6ec054bf2779ab3358186963bac2ea89175919d699e378b99738c2a90"},
     {file = "rich-13.9.4.tar.gz", hash = "sha256:439594978a49a09530cff7ebc4b5c7103ef57baf48d5ea3184f21d9a2befa098"},
@@ -3262,22 +3262,6 @@ files = [
     {file = "trove_classifiers-2025.2.18.16-py3-none-any.whl", hash = "sha256:7f6dfae899f23f04b73bc09e0754d9219a6fc4d6cca6acd62f1850a87ea92262"},
     {file = "trove_classifiers-2025.2.18.16.tar.gz", hash = "sha256:b1ee2e1668589217d4edf506743e28b1834da128f8a122bad522c02d837006e1"},
 ]
-
-[[package]]
-name = "tryceratops"
-version = "2.4.1"
-description = "Prevent Exception Handling AntiPatterns"
-optional = false
-python-versions = "<4.0,>=3.8.1"
-groups = ["dev"]
-files = [
-    {file = "tryceratops-2.4.1-py3-none-any.whl", hash = "sha256:271b92367be89b243918a56361618607d2a9aa4aa4ba766ecfabd5f98c00480c"},
-    {file = "tryceratops-2.4.1.tar.gz", hash = "sha256:fbfc14650004e27cd1e55ebb7c76b43ced04a4d3b4cbe42aac9d71e4623ed84d"},
-]
-
-[package.dependencies]
-click = ">=7"
-rich = ">=10.14.0"
 
 [[package]]
 name = "typer"
@@ -3849,4 +3833,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "c9d7184d5868ec14439472787b9c90e77aeabd45b205a111dd67f2727c68db7f"
+content-hash = "83ac215c02d7c95550057c0ef1532f009bcefae74b43199b9ac6e3a620edbd3e"
