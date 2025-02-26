@@ -18,3 +18,4 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: poetry run precommit.sh
+      - run: poetry run pytest test/unit-test
