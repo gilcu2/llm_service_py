@@ -14,6 +14,7 @@ log_formatter = logging.Formatter(
 stream_handler.setFormatter(log_formatter)
 logger.addHandler(stream_handler)
 
+app = FastAPI()
 
 @app.get("/history/")
 async def get_latest_histories(limit: int = 10):
