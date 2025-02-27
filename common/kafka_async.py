@@ -16,7 +16,7 @@ stream_handler.setFormatter(log_formatter)
 logger.addHandler(stream_handler)
 
 KAFKA_ENDPOINT = os.getenv(
-    "KAFKA_ENDPOINT", "localhost:29092"
+    "KAFKA_ENDPOINT", "localhost:9092"
 )
 logger.debug(f"kafka enpoint: {KAFKA_ENDPOINT}")
 
@@ -33,26 +33,24 @@ async def send_to_kafka(qa: QuestionAnswer):
         await producer.stop()
 
 
-async def get_from_kafka(limit: int) -> list[QuestionAnswer]:
+async def get_from_kafka(group_id: str = "my_group", limit: int|None=None) -> list[QuestionAnswer]:
     consumer = AIOKafkaConsumer(
         "history",
         bootstrap_servers=KAFKA_ENDPOINT,
-        consumer_timeout_ms=500,
-        enable_auto_commit=False,
-        group_id="my_group",
+        auto_offset_reset="earliest",
+        group_id=group_id,
     )
 
-    messages = []
+    r = []
     await consumer.start()
     logger.info("Consumer started")
     try:
-        async for message in consumer:
-            logger.info("Message received from kafka")
-            qa = QuestionAnswer.model_validate_json(message.decode())
-            messages.append(qa)
-            if len(messages) == limit:
-                break
+        data = await consumer.getmany(timeout_ms=1000, max_records=limit)
+        for tp, messages in data.items():
+            for message in messages:
+                qa = QuestionAnswer.model_validate_json(message.value.decode())
+                r.append(qa)
     finally:
         await consumer.stop()
 
-    return messages
+    return r
