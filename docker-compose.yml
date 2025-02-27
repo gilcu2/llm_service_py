@@ -12,13 +12,13 @@ services:
       - llm-service
       - history-service
     environment:
-      - LLM_ENDPOINT=llm-service:8082
+      - LLM_ENDPOINT=llm-service:8081
       - HISTORY_ENDPOINT=history-service:8083
 #
   llm-service:
     image: llm-service
     ports:
-      - "8082:8082"
+      - "8081:8081"
     depends_on:
       - postgres
       - ollama
@@ -37,7 +37,7 @@ services:
 
 
   ollama:
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.5.12
     ports:
       - 11434:11434
     volumes:
@@ -85,23 +85,31 @@ services:
       - POSTGRES_DB=postgres
 
   broker:
-    image: confluentinc/confluent-local:7.4.1
+    image: confluentinc/confluent-local:7.4.4
     hostname: broker
     container_name: broker
     ports:
+      - "8082:8082"
       - "9092:9092"
       - "9101:9101"
-#      - "8082:8082"
     environment:
       KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092'
       KAFKA_CONTROLLER_QUORUM_VOTERS: '1@broker:29093'
       KAFKA_LISTENERS: 'PLAINTEXT://broker:29092,CONTROLLER://broker:29093,PLAINTEXT_HOST://0.0.0.0:9092'
 
   kafka-ui:
-    image: provectuslabs/kafka-ui:latest
+    image: provectuslabs/kafka-ui:v0.7.2
+    depends_on:
+      - broker
     ports:
       - 9999:8080
     environment:
       DYNAMIC_CONFIG_ENABLED: true
-      KAFKA_CLUSTERS_0_NAME: broker
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker:9092
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker:29092
+
+  kafka-init-topics:
+    image: confluentinc/cp-kafka:7.4.4
+    depends_on:
+      - broker
+    command: "kafka-topics --create --topic history --partitions 1 --replication-factor 1 --if-not-exists --bootstrap-server kafka:29092"

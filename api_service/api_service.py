@@ -19,7 +19,7 @@ logger.addHandler(stream_handler)
 
 app = FastAPI()
 
-LLM_ENDPOINT = os.getenv("LLM_ENDPOINT", "localhost:8082")
+LLM_ENDPOINT = os.getenv("LLM_ENDPOINT", "localhost:8081")
 HISTORY_ENDPOINT = os.getenv("HISTORY_ENDPOINT", "localhost:8083")
 
 logger.info(f"LLM_ENDPOINT: {LLM_ENDPOINT}")

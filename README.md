@@ -2,6 +2,11 @@
 
 LLM microservices with local llm via ollama and postgres
 
+## Dependencies
+
+- poetry
+- docker-compose
+
 ## Running:
 
 ./scripts/export_requirements.sh

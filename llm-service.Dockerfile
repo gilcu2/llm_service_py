@@ -19,4 +19,4 @@ EXPOSE 8082
 
 # Run the FastAPI application using uvicorn server
 ENV PYTHONPATH=.
-CMD uvicorn llm_service.llm_service:app --host 0.0.0.0 --port 8082
+CMD uvicorn llm_service.llm_service:app --host 0.0.0.0 --port 8081
