@@ -35,10 +35,10 @@ async def test_send_get():
 @pytest.mark.asyncio
 async def test_get():
     Given("queue with messages and random group id")
-    group_id=f"test_{random.randint(1, 1000)}"
+    group_id = f"test_{random.randint(1, 1000)}"
 
     When("receive")
-    r = await get_from_kafka(limit=1,group_id=group_id)
+    r = await get_from_kafka(limit=1, group_id=group_id)
 
     Then("must be the expected")
     assert len(r) == 1

@@ -1,6 +1,8 @@
 import logging
 import sys
+
 from fastapi import BackgroundTasks, FastAPI
+
 from common.model import QuestionAnswer
 from common.postgres import create_table, get_latest, insert_data
 
@@ -15,6 +17,7 @@ stream_handler.setFormatter(log_formatter)
 logger.addHandler(stream_handler)
 
 app = FastAPI()
+
 
 @app.get("/history/")
 async def get_latest_histories(limit: int = 10):

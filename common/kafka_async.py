@@ -1,9 +1,10 @@
-from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
-
-from common.model import QuestionAnswer
 import logging
 import os
 import sys
+
+from aiokafka import AIOKafkaConsumer, AIOKafkaProducer  # type: ignore[import-untyped]
+
+from common.model import QuestionAnswer
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -15,9 +16,7 @@ log_formatter = logging.Formatter(
 stream_handler.setFormatter(log_formatter)
 logger.addHandler(stream_handler)
 
-KAFKA_ENDPOINT = os.getenv(
-    "KAFKA_ENDPOINT", "localhost:9092"
-)
+KAFKA_ENDPOINT = os.getenv("KAFKA_ENDPOINT", "localhost:9092")
 logger.debug(f"kafka enpoint: {KAFKA_ENDPOINT}")
 
 
@@ -33,7 +32,9 @@ async def send_to_kafka(qa: QuestionAnswer):
         await producer.stop()
 
 
-async def get_from_kafka(group_id: str = "my_group", limit: int|None=None) -> list[QuestionAnswer]:
+async def get_from_kafka(
+    group_id: str = "my_group", limit: int | None = None
+) -> list[QuestionAnswer]:
     consumer = AIOKafkaConsumer(
         "history",
         bootstrap_servers=KAFKA_ENDPOINT,
@@ -46,7 +47,7 @@ async def get_from_kafka(group_id: str = "my_group", limit: int|None=None) -> li
     logger.info("Consumer started")
     try:
         data = await consumer.getmany(timeout_ms=1000, max_records=limit)
-        for tp, messages in data.items():
+        for _, messages in data.items():
             for message in messages:
                 qa = QuestionAnswer.model_validate_json(message.value.decode())
                 r.append(qa)

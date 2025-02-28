@@ -1,3 +1,4 @@
+import asyncio
 import random
 from datetime import datetime
 
@@ -5,9 +6,8 @@ import pytest
 
 from common.bdd_helper import And, Given, Then, When
 from common.kafka_async import send_to_kafka
-from common.postgres import get_latest
 from common.model import QuestionAnswer
-import asyncio
+from common.postgres import get_latest
 
 time_str = str(datetime.now())
 
@@ -31,5 +31,3 @@ async def test_update_postgres():
     Then("must be the expected")
     assert len(r) >= 1
     assert r[-1] == qa
-
-

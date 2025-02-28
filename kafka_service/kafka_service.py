@@ -1,8 +1,9 @@
+import asyncio
 import logging
 import os
 import sys
-import asyncio
-from aiokafka import AIOKafkaConsumer
+
+from aiokafka import AIOKafkaConsumer  # type: ignore[import-untyped]
 
 from common.model import QuestionAnswer
 from common.postgres import insert_data
@@ -17,10 +18,9 @@ log_formatter = logging.Formatter(
 stream_handler.setFormatter(log_formatter)
 logger.addHandler(stream_handler)
 
-KAFKA_ENDPOINT = os.getenv(
-    "KAFKA_ENDPOINT", "localhost:9092"
-)
+KAFKA_ENDPOINT = os.getenv("KAFKA_ENDPOINT", "localhost:9092")
 logger.debug(f"kafka enpoint: {KAFKA_ENDPOINT}")
+
 
 async def update_postgres():
     consumer = AIOKafkaConsumer(
@@ -40,6 +40,7 @@ async def update_postgres():
     finally:
         await consumer.stop()
         logger.debug("Consumer stopped")
+
 
 if __name__ == "__main__":
     asyncio.run(update_postgres())

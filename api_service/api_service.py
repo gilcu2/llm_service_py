@@ -1,11 +1,11 @@
 import logging
 import os
 import sys
-from common.kafka_async import send_to_kafka
 
 import httpx
 from fastapi import FastAPI
 
+from common.kafka_async import send_to_kafka
 from common.model import Question, QuestionAnswer
 
 logger = logging.getLogger(__name__)
