@@ -1,6 +1,12 @@
 # LLM service
 
-LLM microservices with ollama, postgress
+LLM microservices with local llm via ollama. postgres for save history and kafka for send history
+messages to the db.
+
+## Dependencies
+
+- poetry
+- docker-compose
 
 ## Running:
 

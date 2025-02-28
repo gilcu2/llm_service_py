@@ -5,6 +5,7 @@ import sys
 import httpx
 from fastapi import FastAPI
 
+from common.kafka_async import send_to_kafka
 from common.model import Question, QuestionAnswer
 
 logger = logging.getLogger(__name__)
@@ -19,7 +20,7 @@ logger.addHandler(stream_handler)
 
 app = FastAPI()
 
-LLM_ENDPOINT = os.getenv("LLM_ENDPOINT", "localhost:8082")
+LLM_ENDPOINT = os.getenv("LLM_ENDPOINT", "localhost:8081")
 HISTORY_ENDPOINT = os.getenv("HISTORY_ENDPOINT", "localhost:8083")
 
 logger.info(f"LLM_ENDPOINT: {LLM_ENDPOINT}")
@@ -51,7 +52,7 @@ async def get_histories(limit: int = 10) -> list[QuestionAnswer]:
 @app.post("/question")
 async def question(question: Question):
     qa = await ask_question(question)
-    await to_history(qa)
+    await send_to_kafka(qa)
     return qa
 
 

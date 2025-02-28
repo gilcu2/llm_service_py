@@ -6,7 +6,7 @@ import pytest
 from common.bdd_helper import Given, Then, When
 from common.model import Question
 
-LLM_ENDPOINT = os.getenv("LLM_ENDPOINT", "localhost:8082")
+LLM_ENDPOINT = os.getenv("LLM_ENDPOINT", "localhost:8081")
 
 
 @pytest.mark.asyncio

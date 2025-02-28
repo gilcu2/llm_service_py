@@ -7,8 +7,6 @@ from fastapi import FastAPI
 from common.model import Question, QuestionAnswer
 from common.ollama import ask_ollama
 
-app = FastAPI()
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 stream_handler = logging.StreamHandler(sys.stdout)
@@ -18,6 +16,8 @@ log_formatter = logging.Formatter(
 )
 stream_handler.setFormatter(log_formatter)
 logger.addHandler(stream_handler)
+
+app = FastAPI()
 
 
 @app.post("/question")

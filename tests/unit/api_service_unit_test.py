@@ -64,7 +64,7 @@ def test_question(mocker: MockFixture):
 
     And("Mocking external calls")
     mocker.patch("api_service.api_service.ask_question", return_value=mocked_response)
-    mocker.patch("api_service.api_service.to_history", return_value=True)
+    mocker.patch("api_service.api_service.send_to_kafka")
 
     client = TestClient(app)
 
