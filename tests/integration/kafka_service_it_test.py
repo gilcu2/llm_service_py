@@ -16,7 +16,7 @@ time_str = str(datetime.now())
 @pytest.mark.asyncio
 async def test_update_postgres():
     Given("update postgres running in backgroud")
-    asyncio.create_task(update_postgres())
+    task=asyncio.create_task(update_postgres())
 
     qa = QuestionAnswer(
         question=f"How are you {random.randint(1, 1000)}?",
@@ -34,5 +34,6 @@ async def test_update_postgres():
     Then("must be the expected")
     assert len(r) >= 1
     assert r[-1] == qa
+    task.cancel()
 
 

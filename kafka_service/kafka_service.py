@@ -36,7 +36,7 @@ async def update_postgres():
             qa = QuestionAnswer.model_validate_json(message.value.decode())
             logger.debug("QA received from Kafka")
             await insert_data(qa)
-            logger.debug("QA saved to postgres")
+            logger.debug(f"QA saved to postgres: {qa}")
     finally:
         await consumer.stop()
         logger.debug("Consumer stopped")
