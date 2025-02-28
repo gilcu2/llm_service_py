@@ -11,9 +11,11 @@ services:
     depends_on:
       - llm-service
       - history-service
+      - kafka-service
     environment:
       - LLM_ENDPOINT=llm-service:8081
       - HISTORY_ENDPOINT=history-service:8083
+      - KAFKA_ENDPOINT=broker:29092
 #
   llm-service:
     image: llm-service
@@ -35,6 +37,14 @@ services:
     environment:
       - POSTGRES_ENDPOINT=postgresql://user:pass@postgres:5432/postgres
 
+  kafka-service:
+    image: kafka-service
+    depends_on:
+      - broker
+      - postgres
+    environment:
+      - POSTGRES_ENDPOINT=postgresql://user:pass@postgres:5432/postgres
+      - KAFKA_ENDPOINT=broker:29092
 
   ollama:
     image: ollama/ollama:0.5.12
@@ -112,4 +122,4 @@ services:
     image: confluentinc/cp-kafka:7.4.4
     depends_on:
       - broker
-    command: "kafka-topics --create --topic history --partitions 1 --replication-factor 1 --if-not-exists --bootstrap-server kafka:29092"
+    command: "kafka-topics --create --topic history --partitions 1 --replication-factor 1 --if-not-exists --bootstrap-server broker:29092"

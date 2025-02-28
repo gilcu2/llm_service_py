@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from common.kafka_async import send_to_kafka
 
 import httpx
 from fastapi import FastAPI
@@ -51,7 +52,7 @@ async def get_histories(limit: int = 10) -> list[QuestionAnswer]:
 @app.post("/question")
 async def question(question: Question):
     qa = await ask_question(question)
-    await to_history(qa)
+    await send_to_kafka(qa)
     return qa
 
 
